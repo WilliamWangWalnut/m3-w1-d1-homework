@@ -14,13 +14,16 @@ var server = http.createServer((req, res) => {
 
   if (req.method === "GET") {
     var fileUrl = req.url;
-    if (fileUrl === "/") {     //http://http://localhost:5000/
-      fileUrl = "/index.html"; //http://http://localhost:5000/index.html
+    if (fileUrl === "/home") {
+      //http://localhost:5000/
+      fileUrl = "/home.html"; //http://localhost:5000/home.html
     } else if (fileUrl === "/about") {
-      fileUrl = "/about1.html"; //http://http://localhost:5000/about.html
+      fileUrl = "/about.html"; //http://localhost:5000/about.html
     } else if (fileUrl === "/contact") {
-      fileUrl = "/contact1.html"; //http://http://localhost:5000/contact.html
-    }
+      fileUrl = "/contact.html"; //http://localhost:5000/contact.html
+    } else if (fileUrl === "/") {
+      fileUrl = "/home.html"; //http://localhost:5000/home.html
+    };
 
     //define the path to the public folder
     var filePath = path.resolve("./public" + fileUrl);
@@ -32,7 +35,7 @@ var server = http.createServer((req, res) => {
           res.statusCode = 404;
           res.setHeader("Content-Type", "text/html");
           res.end(
-            `<html><body><h1>Invalid Request</h1></body></html>`
+            `<html><body><h1>Error 404: ${fileUrl} not found</h1></body></html>`
           );
           return;
         }
@@ -44,12 +47,16 @@ var server = http.createServer((req, res) => {
     } else {
       res.statusCode = 404;
       res.setHeader("Content-Type", "text/html");
-      res.end(`<html><body><h1>Invalid Request</h1></body></html>`);
+      res.end(
+        `<html><body><h1>Error 404: ${fileUrl} is not an HTML file</h1></body></html>`
+      );
     }
   } else {
     res.statusCode = 404;
     res.setHeader("Content-Type", "text/html");
-    res.end(`<html><body><h1>Invalid Request</h1></body></html>`);
+    res.end(
+      `<html><body><h1>Error 404: ${req.method} not supported</h1></body></html>`
+    );
   }
 });
 
